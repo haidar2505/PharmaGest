@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.effect.DropShadow?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #f5f7fa;"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.DashboardController">
+
+   <top>
+      <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
+         <Label fx:id="usernameLabel" textFill="WHITE">
+            <font>
+               <Font name="System Bold" size="14.0" />
+            </font>
+         </Label>
+      </HBox>
+   </top>
+
+   <center>
+      <VBox alignment="TOP_CENTER" spacing="30" style="-fx-padding: 30;">
+         <Label text="Dashboard" style="-fx-text-fill: #2c3e50;">
+            <font>
+               <Font name="Segoe UI Bold" size="32.0" />
+            </font>
+            <effect>
+               <DropShadow color="#d6d6d6" radius="3" spread="0.2" />
+            </effect>
+         </Label>
+
+         <!-- First Row of Buttons -->
+         <HBox spacing="30" alignment="CENTER">
+            <Button fx:id="maintenanceButton" mnemonicParsing="false" onAction="#maintenanceButtonOnAction"
+                    prefHeight="70.0" prefWidth="220.0" style="-fx-background-color: #3498db; -fx-background-radius: 5;"
+                    text="Maintenance" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="venteButton" mnemonicParsing="false" onAction="#venteButtonOnAction" prefHeight="70.0" prefWidth="220.0"
+                    style="-fx-background-color: #3498db; -fx-background-radius: 5;"
+                    text="Vente" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="caisseButton" mnemonicParsing="false" onAction="#caisseButtonOnAction" prefHeight="70.0" prefWidth="220.0"
+                    style="-fx-background-color: #3498db; -fx-background-radius: 5;"
+                    text="Caisse" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </HBox>
+
+         <!-- Second Row of Buttons -->
+         <HBox spacing="30" alignment="CENTER">
+            <Button fx:id="commandeButton" mnemonicParsing="false" onAction="#commandeButtonOnAction" prefHeight="70.0" prefWidth="220.0"
+                    style="-fx-background-color: #2ecc71; -fx-background-radius: 5;"
+                    text="Commande" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="receptionCmdButton" mnemonicParsing="false" onAction="#setReceptionCmdButtonOnAction" prefHeight="70.0" prefWidth="220.0"
+                    style="-fx-background-color: #2ecc71; -fx-background-radius: 5;"
+                    text="Réception de Commande" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="220.0"
+                    style="-fx-background-color: #2ecc71; -fx-background-radius: 5;"
+                    text="Bilan Financier" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </HBox>
+
+         <!-- User Actions -->
+         <HBox spacing="40" alignment="CENTER" style="-fx-padding: 30;">
+            <Button fx:id="changeButton" mnemonicParsing="false" onAction="#changeButtonOnAction"
+                    prefHeight="60.0" prefWidth="240.0"
+                    style="-fx-background-color: #e74c3c; -fx-background-radius: 5;"
+                    text="Changer d'utilisateur" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="leaveButton" mnemonicParsing="false" onAction="#leaveButtonOnAction"
+                    prefHeight="60.0" prefWidth="240.0"
+                    style="-fx-background-color: #7f8c8d; -fx-background-radius: 5;"
+                    text="Quitter" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </HBox>
+      </VBox>
+   </center>
+
+   <bottom>
+      <HBox alignment="CENTER" style="-fx-padding: 15; -fx-background-color: #ecf0f1;">
+         <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../../../images/PharmaGest_logo.png" />
+            </image>
+         </ImageView>
+      </HBox>
+   </bottom>
+</BorderPane>

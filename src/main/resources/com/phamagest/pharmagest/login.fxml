@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            style="-fx-background-color: #f8f9fa;"
+            fx:controller="controllers.LoginController">
+
+   <center>
+      <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40;">
+         <!-- Logo and Title -->
+         <VBox alignment="CENTER" spacing="10">
+            <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/PharmaGest_logo.png" />
+               </image>
+            </ImageView>
+            <Label text="PharmaGest" style="-fx-text-fill: #2c3e50;">
+               <font>
+                  <Font name="Segoe UI Semibold" size="32" />
+               </font>
+            </Label>
+         </VBox>
+
+         <!-- Login Form -->
+         <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40 50 40 50; -fx-background-color: white; -fx-background-radius: 10;">
+            <!-- Username Field -->
+            <VBox spacing="8" style="-fx-padding: 0 0 10 0;">
+               <Label text="Identifiant" style="-fx-text-fill: #495057;">
+                  <font>
+                     <Font name="Segoe UI Semibold" size="14" />
+                  </font>
+               </Label>
+               <TextField fx:id="usernameTextField" promptText="Entrez votre username"
+                          style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ced4da; -fx-pref-height: 45; -fx-pref-width: 300;"/>
+            </VBox>
+
+            <!-- Password Field -->
+            <VBox spacing="8">
+               <Label text="Mot de passe" style="-fx-text-fill: #495057;">
+                  <font>
+                     <Font name="Segoe UI Semibold" size="14" />
+                  </font>
+               </Label>
+               <PasswordField fx:id="passwordPasswordField" promptText="Entrez votre mot de passe"
+                              style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ced4da; -fx-pref-height: 45; -fx-pref-width: 300;"/>
+            </VBox>
+
+            <!-- Buttons -->
+            <HBox spacing="20" alignment="CENTER" style="-fx-padding: 20 0 0 0;">
+               <Button fx:id="loginButton" text="Login" onAction="#loginButtonOnAction"
+                       style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-pref-width: 140; -fx-pref-height: 40;">
+                  <font>
+                     <Font name="Segoe UI Semibold" size="14" />
+                  </font>
+               </Button>
+               <Button text="Annuler" onAction="#cancelButtonOnAction"
+                       style="-fx-background-color: transparent; -fx-text-fill: #6c757d; -fx-border-color: #6c757d; -fx-border-radius: 5; -fx-background-radius: 5; -fx-pref-width: 140; -fx-pref-height: 40;">
+                  <font>
+                     <Font name="Segoe UI Semibold" size="14" />
+                  </font>
+               </Button>
+            </HBox>
+         </VBox>
+
+         <!-- Footer -->
+         <Label text="Copyright © Tous Droits Réservés. 2024" style="-fx-text-fill: #adb5bd;">
+            <font>
+               <Font name="Segoe UI" size="12" />
+            </font>
+         </Label>
+      </VBox>
+   </center>
+</BorderPane>
