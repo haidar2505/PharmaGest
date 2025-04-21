@@ -31,9 +31,9 @@
          <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 0 0 10 0;">
             <ComboBox fx:id="searchComboBox" promptText="Choisir une colonne" style="-fx-background-radius: 4; -fx-pref-width: 200;" />
             <TextField fx:id="searchField" style="-fx-background-radius: 4; -fx-pref-width: 250;" />
-            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchButtonOnAction" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 100;" text="Rechercher" />
-            <Button fx:id="searchButtonAnnuler" mnemonicParsing="false" onAction="#searchButtonAnnulerOnAction" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 80;" text="Annuler" />
-            <Button fx:id="supprmierMedicament" mnemonicParsing="false" onAction="#supprimerMedicamentButtonOnAction" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 100;" text="Supprimer">
+            <Button mnemonicParsing="false" onAction="#searchButtonOnAction" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 100;" text="Rechercher" />
+            <Button mnemonicParsing="false" onAction="#searchButtonAnnulerOnAction" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 80;" text="Annuler" />
+            <Button mnemonicParsing="false" onAction="#supprimerMedicamentButtonOnAction" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 100;" text="Supprimer">
             </Button>
             <Label fx:id="deleteError" style="-fx-text-fill: #e74c3c; -fx-padding: 0 0 0 10;" />
          </HBox>
@@ -104,9 +104,9 @@
             </HBox>
 
             <HBox spacing="15" style="-fx-padding: 10 0 0 0;">
-               <Button fx:id="medicamentAddButton" mnemonicParsing="false" onAction="#medicamentAddButtonOnAction" prefWidth="150" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 4;" text="Ajouter" />
-               <Button fx:id="medicamentModifierButton" mnemonicParsing="false" onAction="#medicamentModifierButtonOnAction" prefWidth="150" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 100;" text="Modifier" />
-               <Button fx:id="medicamentAnnulerButton" mnemonicParsing="false" onAction="#medicamentAnnulerButtonOnAction" prefWidth="150" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 4;" text="Annuler" />
+               <Button mnemonicParsing="false" onAction="#medicamentAddButtonOnAction" prefWidth="150" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 4;" text="Ajouter" />
+               <Button mnemonicParsing="false" onAction="#medicamentModifierButtonOnAction" prefWidth="150" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 100;" text="Modifier" />
+               <Button mnemonicParsing="false" onAction="#medicamentAnnulerButtonOnAction" prefWidth="150" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 4;" text="Annuler" />
             </HBox>
          </VBox>
       </VBox>

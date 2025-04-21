@@ -16,16 +16,14 @@ public class SessionManager {
     private static boolean estSuperAdmin;
 
     // Method to set all user information at login
-    public static void setUserInfo(String prenom, String nom, Date dateNaissance,
-                                   String telephone, String email, String adresse,
+    public static void setUserInfo(String prenom, String nom,
+                                   String telephone, String email,
                                    String identifiant,
                                    String status, boolean estSuperAdmin) {
         SessionManager.prenom = prenom;
         SessionManager.nom = nom;
-        SessionManager.dateNaissance = String.valueOf(dateNaissance);
         SessionManager.telephone = telephone;
         SessionManager.email = email;
-        SessionManager.adresse = adresse;
         SessionManager.identifiant = identifiant;
         SessionManager.status = status;
         SessionManager.estSuperAdmin = estSuperAdmin;
@@ -40,20 +38,12 @@ public class SessionManager {
         return nom;
     }
 
-    public static String getDateNaissance() {
-        return dateNaissance;
-    }
-
     public static String getTelephone() {
         return telephone;
     }
 
     public static String getEmail() {
         return email;
-    }
-
-    public static String getAdresse() {
-        return adresse;
     }
 
     public static String getIdentifiant() {
@@ -73,10 +63,8 @@ public class SessionManager {
         userId = null;
         prenom = null;
         nom = null;
-        dateNaissance = null;
         telephone = null;
         email = null;
-        adresse = null;
         identifiant = null;
         status = null;
         estSuperAdmin = false;
