@@ -22,14 +22,12 @@ public class UtilisateurDAO {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Utilisateur utilisateur = new Utilisateur(
-                        rs.getInt("utilisateur_id"),
                         rs.getString("nom"),
                         rs.getString("prenom"),
                         rs.getString("email"),
-                        rs.getString("telephone"),
                         rs.getString("identifiant"),
-                        rs.getString("status"),
-                        rs.getBoolean("est_superadmin")
+                        rs.getString("role"),
+                        rs.getBoolean("is_admin")
                 );
                 utilisateurList.add(utilisateur);
             }
@@ -56,12 +54,12 @@ public class UtilisateurDAO {
 
     //Get utilisateur id
     public int getUtilisateurId(String username) throws SQLException{
-        String getId = "SELECT utilisateur_id FROM utilisateur WHERE identifiant = ?";
+        String getId = "SELECT id_utilisateur FROM utilisateur WHERE identifiant = ?";
         try(PreparedStatement stmt = conn.prepareStatement(getId)){
             stmt.setString(1, username);
             try(ResultSet rs = stmt.executeQuery()){
                 if(rs.next()){
-                    return rs.getInt("utilisateur_id");
+                    return rs.getInt("id_utilisateur");
                 }
             }
         }
@@ -74,31 +72,44 @@ public class UtilisateurDAO {
         try(PreparedStatement stmt = conn.prepareStatement(ajouterUtilisateur)) {
             stmt.setString(1, utilisateur.getPrenom());
             stmt.setString(2, utilisateur.getNom());
-            stmt.setString(3, utilisateur.getTelephone());
             stmt.setString(4, utilisateur.getEmail());
             stmt.setString(5, utilisateur.getIdentifiant());
             stmt.setString(6, utilisateur.getMotDePasse());
-            stmt.setString(7, utilisateur.getStatus());
-            stmt.setBoolean(8, utilisateur.isEstSuperAdmin());
+            stmt.setString(7, utilisateur.getRole());
+            stmt.setBoolean(8, utilisateur.getIsAdmin());
             return stmt.executeUpdate() > 0;
         }
     }
 
     //Modify utilisateur
     public boolean modifierUtilisateur(int userID, Utilisateur utilisateur) throws SQLException{
-        String modifyUtilisateurPassword = "UPDATE utilisateur SET prenom = ?, nom = ?, telephone = ?, email = ?, identifiant = ?, mot_de_passe = ?, status = ?, est_superadmin = ? WHERE utilisateur_id = ?";
-        try(PreparedStatement stmt = conn.prepareStatement(modifyUtilisateurPassword)) {
-            stmt.setString(1, utilisateur.getPrenom());
-            stmt.setString(2, utilisateur.getNom());
-            stmt.setString(3, utilisateur.getTelephone());
-            stmt.setString(4, utilisateur.getEmail());
-            stmt.setString(5, utilisateur.getIdentifiant());
-            stmt.setString(6, utilisateur.getMotDePasse());
-            stmt.setString(7, utilisateur.getStatus());
-            stmt.setBoolean(8, utilisateur.isEstSuperAdmin());
-            stmt.setInt(9, userID);
-            return stmt.executeUpdate() > 0;
+        if(utilisateur.getMotDePasse().isEmpty()){
+            String modifyUtilisateurPassword = "UPDATE utilisateur SET prenom = ?, nom = ?, email = ?, identifiant = ?, role = ?, is_admin = ? WHERE id_utilisateur = ?";
+            try(PreparedStatement stmt = conn.prepareStatement(modifyUtilisateurPassword)) {
+                stmt.setString(1, utilisateur.getPrenom());
+                stmt.setString(2, utilisateur.getNom());
+                stmt.setString(3, utilisateur.getEmail());
+                stmt.setString(4, utilisateur.getIdentifiant());
+                stmt.setString(6, utilisateur.getRole());
+                stmt.setBoolean(7, utilisateur.getIsAdmin());
+                stmt.setInt(8, userID);
+                return stmt.executeUpdate() > 0;
+            }
+        }else{
+            String modifyUtilisateurPassword = "UPDATE utilisateur SET prenom = ?, nom = ?, email = ?, identifiant = ?, mot_de_passe = ?, role = ?, is_admin = ? WHERE id_utilisateur = ?";
+            try(PreparedStatement stmt = conn.prepareStatement(modifyUtilisateurPassword)) {
+                stmt.setString(1, utilisateur.getPrenom());
+                stmt.setString(2, utilisateur.getNom());
+                stmt.setString(3, utilisateur.getEmail());
+                stmt.setString(4, utilisateur.getIdentifiant());
+                stmt.setString(5, utilisateur.getMotDePasse());
+                stmt.setString(6, utilisateur.getRole());
+                stmt.setBoolean(7, utilisateur.getIsAdmin());
+                stmt.setInt(8, userID);
+                return stmt.executeUpdate() > 0;
+            }
         }
+
     }
 
     //Supprimer utilisateur

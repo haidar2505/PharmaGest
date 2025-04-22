@@ -1,52 +1,106 @@
 package models;
 
 public class Medicament {
-    private String DCI;
+    private int idMedicament;
+    private String dci;
     private String dosage;
-    private double prixUnitVente;
-    private double prixUnitAchat;
-    private int qteStock;
-    private String nomFamille;
+    private double puAchat;
+    private double puVente;
+    private int stock;
+    private int stockMin;
+    private int stockMax;
+    private boolean ordonnance;
 
-    // Associations
+    // Object references
     private Forme forme;
     private Famille famille;
+    private Fournisseur fournisseur;
 
-    public Medicament(String DCI, double prixUnitVente, double prixUnitAchat) {
-        this.DCI = DCI;
-        this.prixUnitVente = prixUnitVente;
-        this.prixUnitAchat = prixUnitAchat;
+    // ID fields (kept for backward compatibility)
+    private int idForme;
+    private int idFamille;
+    private int idFournisseur;
+
+    // Constructors
+    public Medicament() {
     }
 
-    public Medicament(String DCI) {
-        this.DCI = DCI;
-    }
-
-    public Medicament(String DCI, String dosage, double prixUnitVente, double prixUnitAchat, int qteStock, Forme forme, Famille famille) {
-        this.DCI = DCI;
+    // Constructor with IDs
+    public Medicament(int idMedicament, String dci, String dosage, double puAchat, double puVente,
+                      int stock, int stockMin, int stockMax, boolean ordonnance,
+                      Fournisseur fournisseur, Famille famille, Forme forme) {
+        this.idMedicament = idMedicament;
+        this.dci = dci;
         this.dosage = dosage;
-        this.prixUnitVente = prixUnitVente;
-        this.prixUnitAchat = prixUnitAchat;
-        this.qteStock = qteStock;
-        this.forme = forme;
+        this.puAchat = puAchat;
+        this.puVente = puVente;
+        this.stock = stock;
+        this.stockMin = stockMin;
+        this.stockMax = stockMax;
+        this.ordonnance = ordonnance;
+        this.fournisseur = fournisseur;
         this.famille = famille;
+        this.forme = forme;
     }
 
-    public Medicament(String DCI, double prixUnitVente, String nomFamille, int qteStock) {
-        this.DCI = DCI;
-        this.prixUnitVente = prixUnitVente;
-        this.nomFamille = nomFamille;
-        this.qteStock = qteStock;
+    public Medicament(String dci, String dosage, double puAchat, double puVente,
+                      int stock, int stockMin, int stockMax, boolean ordonnance,
+                      int idForme, int idFamille, int idFournisseur) {
+        this.dci = dci;
+        this.dosage = dosage;
+        this.puAchat = puAchat;
+        this.puVente = puVente;
+        this.stock = stock;
+        this.stockMin = stockMin;
+        this.stockMax = stockMax;
+        this.ordonnance = ordonnance;
+        this.idForme = idForme;
+        this.idFamille = idFamille;
+        this.idFournisseur = idFournisseur;
     }
 
-    @Override
-    public String toString() {
-        return "Medicament{" +
-                "DCI='" + DCI + '\'' +
-                ", dosage='" + dosage + '\'' +
-                ", forme=" + forme +
-                ", famille=" + famille +
-                '}';
+    // Constructor with objects
+    public Medicament(int idMedicament, String dci, double puAchat, double puVente,
+                      int stock, int stockMin, int stockMax, boolean ordonnance,
+                      Fournisseur fournisseur, Famille famille, Forme forme) {
+        this.idMedicament = idMedicament;
+        this.dci = dci;
+        this.puAchat = puAchat;
+        this.puVente = puVente;
+        this.stock = stock;
+        this.stockMin = stockMin;
+        this.stockMax = stockMax;
+        this.ordonnance = ordonnance;
+        this.fournisseur = fournisseur;
+        this.famille = famille;
+        this.forme = forme;
+        this.idFournisseur = fournisseur != null ? fournisseur.getIdFournisseur() : 0;
+        this.idFamille = famille != null ? famille.getIdFamille() : 0;
+        this.idForme = forme != null ? forme.getIdForme() : 0;
+    }
+
+    public Medicament(int idMedicament, String dci, double prixunitAchat, double prixunitVente) {
+        this.idMedicament = idMedicament;
+        this.dci = dci;
+        this.puAchat = prixunitAchat;
+        this.puVente = prixunitVente;
+    }
+
+    // Getters and Setters for all fields
+    public int getIdMedicament() {
+        return idMedicament;
+    }
+
+    public void setIdMedicament(int idMedicament) {
+        this.idMedicament = idMedicament;
+    }
+
+    public String getDci() {
+        return dci;
+    }
+
+    public void setDci(String dci) {
+        this.dci = dci;
     }
 
     public String getDosage() {
@@ -57,44 +111,62 @@ public class Medicament {
         this.dosage = dosage;
     }
 
-    public String getDCI() {
-        return DCI;
+    public double getPuAchat() {
+        return puAchat;
     }
 
-    public void setDCI(String DCI) {
-        this.DCI = DCI;
+    public void setPuAchat(double puAchat) {
+        this.puAchat = puAchat;
     }
 
-    public double getPrixUnitVente() {
-        return prixUnitVente;
+    public double getPuVente() {
+        return puVente;
     }
 
-    public void setPrixUnitVente(double prixUnitVente) {
-        this.prixUnitVente = prixUnitVente;
+    public void setPuVente(double puVente) {
+        this.puVente = puVente;
     }
 
-    public double getPrixUnitAchat() {
-        return prixUnitAchat;
+    public int getStock() {
+        return stock;
     }
 
-    public void setPrixUnitAchat(double prixUnitAchat) {
-        this.prixUnitAchat = prixUnitAchat;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
-    public int getQteStock() {
-        return qteStock;
+    public int getStockMin() {
+        return stockMin;
     }
 
-    public void setQteStock(int qteStock) {
-        this.qteStock = qteStock;
+    public void setStockMin(int stockMin) {
+        this.stockMin = stockMin;
     }
 
+    public int getStockMax() {
+        return stockMax;
+    }
+
+    public void setStockMax(int stockMax) {
+        this.stockMax = stockMax;
+    }
+
+    public boolean isOrdonnance() {
+        return ordonnance;
+    }
+
+    public void setOrdonnance(boolean ordonnance) {
+        this.ordonnance = ordonnance;
+    }
+
+    // Object reference getters and setters
     public Forme getForme() {
         return forme;
     }
 
     public void setForme(Forme forme) {
         this.forme = forme;
+        this.idForme = forme != null ? forme.getIdForme() : 0;
     }
 
     public Famille getFamille() {
@@ -103,8 +175,49 @@ public class Medicament {
 
     public void setFamille(Famille famille) {
         this.famille = famille;
+        this.idFamille = famille != null ? famille.getIdFamille() : 0;
     }
 
-    // Getters et Setters
-    // (générer en conséquence)
+    public Fournisseur getFournisseur() {
+        return fournisseur;
+    }
+
+    public void setFournisseur(Fournisseur fournisseur) {
+        this.fournisseur = fournisseur;
+        this.idFournisseur = fournisseur != null ? fournisseur.getIdFournisseur() : 0;
+    }
+
+    // ID field getters and setters (maintained for compatibility)
+    public int getIdFournisseur() {
+        return fournisseur != null ? fournisseur.getIdFournisseur() : idFournisseur;
+    }
+
+    public void setIdFournisseur(int idFournisseur) {
+        this.idFournisseur = idFournisseur;
+        if (this.fournisseur != null) {
+            this.fournisseur.setIdFournisseur(idFournisseur);
+        }
+    }
+
+    public int getIdFamille() {
+        return famille != null ? famille.getIdFamille() : idFamille;
+    }
+
+    public void setIdFamille(int idFamille) {
+        this.idFamille = idFamille;
+        if (this.famille != null) {
+            this.famille.setIdFamille(idFamille);
+        }
+    }
+
+    public int getIdForme() {
+        return forme != null ? forme.getIdForme() : idForme;
+    }
+
+    public void setIdForme(int idForme) {
+        this.idForme = idForme;
+        if (this.forme != null) {
+            this.forme.setIdForme(idForme);
+        }
+    }
 }

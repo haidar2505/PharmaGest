@@ -1,153 +1,80 @@
 package models;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.control.DatePicker;
-
 import java.util.Date;
 
 public class Utilisateur {
-    public int id;
-    private String prenom;
+    private int idUtilisateur;
     private String nom;
-    private String telephone;
+    private String prenom;
     private String email;
     private String identifiant;
     private String motDePasse;
-    private String status;
-    private boolean estSuperAdmin;
+    private String role;
+    private boolean isAdmin;
+    private Date lastLogin;
 
-    // Associations
-    private Permission permission;
-
-    //Constructeur pour ajouter un utilisateur
-    public Utilisateur(String nom, String prenom, String email, String tel, String identifiant, String motDePasse, String status, Boolean estSuperAdmin) {
+    // Colonnes
+    public Utilisateur(String nom, String prenom, String email, String identifiant, String role, boolean isAdmin) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
-        this.telephone = tel;
+        this.identifiant = identifiant;
+        this.role = role;
+        this.isAdmin = isAdmin;
+    }
+
+    // Ajouter
+    public Utilisateur(String nom, String prenom, String email, String identifiant, String motDePasse, String role, boolean isAdmin, Date lastLogin) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
         this.identifiant = identifiant;
         this.motDePasse = motDePasse;
-        this.status = status;
-        this.estSuperAdmin = estSuperAdmin;
+        this.role = role;
+        this.isAdmin = isAdmin;
+        this.lastLogin = lastLogin;
     }
 
-    //Contructeur pour modifier (unfinished)
-    public Utilisateur(int id, String nom, String prenom, String email, String telephone, String identifiant, Boolean estSuperAdmin) {
-        this.id = id;
+    // Modifier
+    public Utilisateur(String nom, String prenom, String email, String identifiant, String motDePasse, String role, boolean isAdmin) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
-        this.telephone = telephone;
         this.identifiant = identifiant;
-        this.estSuperAdmin = estSuperAdmin;
+        this.motDePasse = motDePasse;
+        this.role = role;
+        this.isAdmin = isAdmin;
     }
 
-    public Utilisateur() {
+    // Getters and Setters
+    public int getIdUtilisateur() { return idUtilisateur; }
+    public void setIdUtilisateur(int idUtilisateur) { this.idUtilisateur = idUtilisateur; }
 
-    }
+    public String getNom() { return nom; }
+    public void setNom(String nom) { this.nom = nom; }
 
-    public Utilisateur(int utilisateurId, String nom, String prenom, String email, String telephone, String identifiant, String status, boolean estSuperAdmin) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.email = email;
-        this.telephone = telephone;
-        this.identifiant = identifiant;
-        this.status = status;
-        this.estSuperAdmin = estSuperAdmin;
-    }
+    public String getPrenom() { return prenom; }
+    public void setPrenom(String prenom) { this.prenom = prenom; }
 
-    public Utilisateur(String nom, String prenom, String email, String telephone, String identifiant, String status, boolean estSuperAdmin) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.email = email;
-        this.telephone = telephone;
-        this.identifiant = identifiant;
-        this.status = status;
-        this.estSuperAdmin = estSuperAdmin;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public int getId() {
-        return id;
-    }
-    public String getPrenom() {
-        return prenom;
-    }
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
-    public String getNom() {
-        return nom;
-    }
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-    public String getTelephone() { return telephone; }
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public String getIdentifiant() {
-        return identifiant;
-    }
-    public void setIdentifiant(String identifiant) {
-        this.identifiant = identifiant;
-    }
-    public String getStatus() {
-        return status;
-    }
-    public void setStatus(String status) {
-        this.status = status;
-    }
-    public boolean isEstSuperAdmin() {
-        return estSuperAdmin;
-    }
-    public void setEstSuperAdmin(boolean estSuperAdmin) {
-        this.estSuperAdmin = estSuperAdmin;
-    }
-    public Permission getPermission() {
-        return permission;
-    }
-    public void setPermission(Permission permission) {
-        this.permission = permission;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
+    public String getIdentifiant() { return identifiant; }
+    public void setIdentifiant(String identifiant) { this.identifiant = identifiant; }
+
     public String getMotDePasse() { return motDePasse; }
     public void setMotDePasse(String motDePasse) { this.motDePasse = motDePasse; }
 
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 
-
-    @Override
-    public String toString() {
-        return "Utilisateur{" +
-                "prenom='" + prenom + '\'' +
-                ", nom='" + nom + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", email='" + email + '\'' +
-                ", identifiant='" + identifiant + '\'' +
-//                ", motDePasse='" + motDePasse + '\'' +
-                '}';
+    public boolean getIsAdmin() {
+        return isAdmin;
     }
+    public void setIsAdmin(boolean isAdmin) { this.isAdmin = isAdmin; }
 
-
-
-    // Méthodes
-    public void createUtilisateur() {
-        // Logique pour créer un utilisateur
+    public Date getlastLogin() {
+        return lastLogin;
     }
-
-    public void updateUtilisateur() {
-        // Logique pour modifier un utilisateur
-    }
-
-    public void deleteUtilisateur() {
-        // Logique pour supprimer un utilisateur
-    }
+    public void setlastLogin(Date dateCommande) { this.lastLogin = lastLogin; }
 }
-

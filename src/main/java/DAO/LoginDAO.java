@@ -23,12 +23,11 @@ public class LoginDAO {
                     String prenom = rs.getString("prenom");
                     String nom = rs.getString("nom");
                     String email = rs.getString("email");
-                    String telephone = rs.getString("telephone");
                     String identifiant = rs.getString("identifiant");
-                    String status = rs.getString("status");
-                    boolean est_superadmin = rs.getBoolean("est_superadmin");
+                    String role = rs.getString("role");
+                    boolean isAdmin = rs.getBoolean("is_admin");
 
-                    SessionManager.setUserInfo(prenom, nom, telephone, email, identifiant, status, est_superadmin);
+                    SessionManager.setUserInfo(prenom, nom, email, identifiant, role, isAdmin);
 
                     return true;
                 } else {

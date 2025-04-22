@@ -1,36 +1,40 @@
 package models;
-public class Famille {
-    private int numFamille;
-    private String nomFamille;
 
-    // Constructeur
-    public Famille(int numFamille, String nomFamille) {
-        this.numFamille = numFamille;
-        this.nomFamille = nomFamille;
+public class Famille {
+    private int idFamille;
+    private String nom;
+
+    // Constructors
+    public Famille() {
+    }
+
+    public Famille(int idFamille, String nom) {
+        this.idFamille = idFamille;
+        this.nom = nom;
+    }
+
+    public Famille(int idFamille) {
+        this.idFamille = idFamille;
     }
 
     public Famille(String nomFamille) {
-        this.nomFamille = nomFamille;
+        this.nom = nomFamille;
     }
 
-    public Famille(int numFamille) {
-        this.numFamille = numFamille;
+    // Getters and Setters
+    public int getIdFamille() {
+        return idFamille;
     }
 
-    // Getters et Setters
-    public int getNumFamille() {
-        return numFamille;
-    }
-
-    public void setNumFamille(int numFamille) {
-        this.numFamille = numFamille;
+    public void setIdFamille(int idFamille) {
+        this.idFamille = idFamille;
     }
 
     public String getNomFamille() {
-        return nomFamille;
+        return nom;
     }
 
-    public void setNomFamille(String nomFamille) {
-        this.nomFamille = nomFamille;
+    public void setNomFamille(String nom) {
+        this.nom = nom;
     }
 }

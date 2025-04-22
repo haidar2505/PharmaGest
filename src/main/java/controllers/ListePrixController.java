@@ -25,10 +25,12 @@ public class ListePrixController {
     }
 
     @FXML private TableView<Medicament> listPrixTable;
+    @FXML private TableColumn<Utilisateur, String> idColumn;
     @FXML private TableColumn<Utilisateur, String> medicamentColumn;
     @FXML private TableColumn<Utilisateur, Double> prixachatColumn;
     @FXML private TableColumn<Utilisateur, Double> prixventeColumn;
 
+    @FXML private TextField idField;
     @FXML private TextField medicamentSearchField;
     @FXML private TextField PUachatField;
     @FXML private TextField PUventeField;
@@ -36,15 +38,17 @@ public class ListePrixController {
     @FXML
     public void initialize() throws SQLException {
         if (listPrixTable != null) {
-            medicamentColumn.setCellValueFactory(new PropertyValueFactory<>("DCI"));
-            prixachatColumn.setCellValueFactory(new PropertyValueFactory<>("prixUnitAchat"));
-            prixventeColumn.setCellValueFactory(new PropertyValueFactory<>("prixUnitVente"));
+            medicamentColumn.setCellValueFactory(new PropertyValueFactory<>("idMedicament"));
+            medicamentColumn.setCellValueFactory(new PropertyValueFactory<>("dci"));
+            prixachatColumn.setCellValueFactory(new PropertyValueFactory<>("puAchat"));
+            prixventeColumn.setCellValueFactory(new PropertyValueFactory<>("puVente"));
 
             listPrixTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
-                    medicamentSearchField.setText(newSelection.getDCI());
-                    PUachatField.setText(String.valueOf(newSelection.getPrixUnitAchat()));
-                    PUventeField.setText(String.valueOf(newSelection.getPrixUnitVente()));
+                    idField.setText(String.valueOf(newSelection.getIdMedicament()));
+                    medicamentSearchField.setText(newSelection.getDci());
+                    PUachatField.setText(String.valueOf(newSelection.getPuAchat()));
+                    PUventeField.setText(String.valueOf(newSelection.getPuVente()));
                 }
             });
 
@@ -77,11 +81,12 @@ public class ListePrixController {
         if (ValidationUtils.validatePrice(PUventeField, prixventeError)) isInvalid = true;
 
         if(!isInvalid){
+            int idDci = Integer.parseInt(idField.getText().trim());
             String dci = medicamentSearchField.getText().trim();
             double prixachat = Double.parseDouble(PUachatField.getText().trim());
             double prixvente = Double.parseDouble(PUventeField.getText().trim());
 
-            if(medicamentDAO.MAJprix(dci, prixachat, prixvente)){
+            if(medicamentDAO.MAJprix(idDci, prixachat, prixvente)){
                 clearMAJ();
                 loadMedicamentData();
             }

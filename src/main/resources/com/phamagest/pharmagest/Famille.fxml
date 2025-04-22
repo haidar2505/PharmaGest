@@ -28,30 +28,32 @@
         <AnchorPane style="-fx-padding: 15;">
             <!-- Search Section -->
             <HBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="50.0" spacing="10">
+                <TextField fx:id="idField" visible="false" managed="false"/>
                 <TextField fx:id="familleSearchField" prefHeight="35.0" prefWidth="200.0"
                            promptText="Rechercher une famille" style="-fx-background-radius: 4;" />
-                <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchButtonOnAction"
+                <Button mnemonicParsing="false" onAction="#searchButtonOnAction"
                         style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 100;"
                         text="Rechercher" />
-                <Button fx:id="addFamille" mnemonicParsing="false" onAction="#addFamilleButtonOnAction"
+                <Button mnemonicParsing="false" onAction="#addFamilleButtonOnAction"
                         style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 100;"
                         text="Ajouter" />
-                <Button fx:id="supprimerMedicament" mnemonicParsing="false" onAction="#supprimerFamilleButtonOnAction"
+                <Button mnemonicParsing="false" onAction="#supprimerFamilleButtonOnAction"
                         style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 100;"
                         text="Supprimer" />
-                <Button fx:id="searchButtonAnnuler" mnemonicParsing="false" onAction="#searchButtonAnnulerOnAction"
+                <Button mnemonicParsing="false" onAction="#searchButtonAnnulerOnAction"
                         style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 80;"
                         text="Annuler" />
             </HBox>
 
             <!-- Error Labels -->
-            <Label fx:id="searchError" layoutX="14.0" layoutY="88.0" style="-fx-text-fill: #e74c3c;" />
+            <Label layoutX="14.0" layoutY="88.0" style="-fx-text-fill: #e74c3c;" />
             <Label fx:id="familleError" layoutX="14.0" layoutY="88.0" style="-fx-text-fill: #e74c3c;" />
 
             <!-- Famille Table -->
             <TableView fx:id="familleTable" layoutX="22.0" layoutY="107.0" prefHeight="350.0" prefWidth="772.0"
                        style="-fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);">
                 <columns>
+                    <TableColumn fx:id="idColumn" text="ID" visible="false" />
                     <TableColumn fx:id="familleColumn" style="-fx-alignment: CENTER_LEFT;" text="Famille" />
                 </columns>
                 <columnResizePolicy>

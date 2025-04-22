@@ -12,7 +12,9 @@ import models.Utilisateur;
 import utils.Utils;
 import utils.ValidationUtils;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,7 +40,6 @@ public class UtilisateurController {
     @FXML private TableColumn<Utilisateur, String> nomColumn;
     @FXML private TableColumn<Utilisateur, String> prenomColumn;
     @FXML private TableColumn<Utilisateur, String> emailColumn;
-    @FXML private TableColumn<Utilisateur, String> telephoneColumn;
     @FXML private TableColumn<Utilisateur, String> identifiantColumn;
     @FXML private TableColumn<Utilisateur, String> roleColumn;
     @FXML private TableColumn<Utilisateur, String> adminColumn;
@@ -51,7 +52,7 @@ public class UtilisateurController {
     //ComboBox values
     private final ObservableList<String> roles = FXCollections.observableArrayList("Pharmacien", "Vendeur");
     private final ObservableList<String> admin = FXCollections.observableArrayList("Admin", "Employé");
-    private final ObservableList<String> columns = FXCollections.observableArrayList("Nom", "Prénom", "Email", "Téléphone", "Identifiant");
+    private final ObservableList<String> columns = FXCollections.observableArrayList("Nom", "Prénom", "Email", "Identifiant", "Rôle");
     private String originalUsername;
 
     //Initialize
@@ -68,10 +69,10 @@ public class UtilisateurController {
             nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
             prenomColumn.setCellValueFactory(new PropertyValueFactory<>("prenom"));
             emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
-            telephoneColumn.setCellValueFactory(new PropertyValueFactory<>("telephone"));
             identifiantColumn.setCellValueFactory(new PropertyValueFactory<>("identifiant"));
-            roleColumn.setCellValueFactory(new PropertyValueFactory<>("status"));adminColumn.setCellValueFactory(cellData -> {
-                boolean isAdmin = cellData.getValue().isEstSuperAdmin();
+            roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
+            adminColumn.setCellValueFactory(cellData -> {
+                boolean isAdmin = cellData.getValue().getIsAdmin();
                 return new SimpleStringProperty(isAdmin ? "Admin" : "Employé");
             });
 
@@ -82,9 +83,8 @@ public class UtilisateurController {
                     nomField.setText(newSelection.getNom());
                     prenomField.setText(newSelection.getPrenom());
                     emailField.setText(newSelection.getEmail());
-                    telephoneField.setText(newSelection.getTelephone());
-                    adminComboBox.setValue(newSelection.isEstSuperAdmin() ? "Admin" : "Employé");
-                    roleComboBox.setValue(String.valueOf(newSelection.getStatus()));
+                    adminComboBox.setValue(newSelection.getIsAdmin() ? "Admin" : "Employé");
+                    roleComboBox.setValue(String.valueOf(newSelection.getRole()));
                     identifiantField.setText(String.valueOf(newSelection.getIdentifiant()));
                 }
             });
@@ -139,11 +139,11 @@ public class UtilisateurController {
                         case "Email":
                             matches = utilisateur.getEmail().toLowerCase().contains(lowerCaseFilter);
                             break;
-                        case "Téléphone":
-                            matches = utilisateur.getTelephone().toLowerCase().contains(lowerCaseFilter);
-                            break;
                         case "Identifiant":
                             matches = utilisateur.getIdentifiant().toLowerCase().contains(lowerCaseFilter);
+                            break;
+                        case "Rôle":
+                            matches = utilisateur.getRole().toLowerCase().contains(lowerCaseFilter);
                             break;
                     }
                     if (matches) {
@@ -166,7 +166,6 @@ public class UtilisateurController {
     @FXML private TextField nomField;
     @FXML private TextField prenomField;
     @FXML private TextField emailField;
-    @FXML private TextField telephoneField;
     @FXML private TextField identifiantField;
     @FXML private PasswordField passwordField;
     @FXML private PasswordField passwordIdentiqueField;
@@ -175,7 +174,6 @@ public class UtilisateurController {
     @FXML private Label nomFieldError;
     @FXML private Label prenomFieldError;
     @FXML private Label emailFieldError;
-    @FXML private Label telephoneFieldError;
     @FXML private Label roleFieldError;
     @FXML private Label adminFieldError;
     @FXML private Label identifiantFieldError;
@@ -197,7 +195,6 @@ public class UtilisateurController {
         if (ValidationUtils.validateName(nomField, nomFieldError)) isInvalid = true;
         if (ValidationUtils.validateName(prenomField, prenomFieldError)) isInvalid = true;
         if (ValidationUtils.validateEmail(emailField, emailFieldError)) isInvalid = true;
-        if (ValidationUtils.validatePhone(telephoneField, telephoneFieldError)) isInvalid = true;
         if (validateIdentifiant()) {
             isInvalid = true;
         }else{
@@ -224,13 +221,14 @@ public class UtilisateurController {
             String nom = nomField.getText().trim();
             String prenom = prenomField.getText().trim();
             String email = emailField.getText().trim();
-            String tel = telephoneField.getText().trim();
             String identifiant = identifiantField.getText().trim();
             String password = Utils.hashWithSHA256((passwordField).getText().trim());
             String role = roleComboBox.getValue().trim();
 
-            Utilisateur newUtilisateur = new Utilisateur(nom, prenom, email, tel, identifiant, password, role, isAdmin);
-            if (utilisateurDAO.addUtilisateur(newUtilisateur)) {
+            Date lastLogin = Date.valueOf(LocalDate.now());
+
+            Utilisateur ajouterUtilisateur = new Utilisateur(nom, prenom, email, identifiant, password, role, isAdmin, lastLogin);
+            if (utilisateurDAO.addUtilisateur(ajouterUtilisateur)) {
                 loadUtilisateurData();
                 clearForm();
             }
@@ -266,7 +264,6 @@ public class UtilisateurController {
             if (ValidationUtils.validateName(nomField, nomFieldError)) isInvalid = true;
             if (ValidationUtils.validateName(prenomField, prenomFieldError)) isInvalid = true;
             if (ValidationUtils.validateEmail(emailField, emailFieldError)) isInvalid = true;
-            if (ValidationUtils.validatePhone(telephoneField, telephoneFieldError)) isInvalid = true;
 
             if (Objects.equals(identifiantField.getText(), originalUsername)) {
                 identifiantFieldError.setText("");
@@ -302,12 +299,11 @@ public class UtilisateurController {
                 String nom = nomField.getText().trim();
                 String prenom = prenomField.getText().trim();
                 String email = emailField.getText().trim();
-                String tel = telephoneField.getText().trim();
                 String identifiant = identifiantField.getText().trim();
                 String role = roleComboBox.getValue().trim();
                 String password = Utils.hashWithSHA256((passwordField).getText().trim());
 
-                Utilisateur modifierUtilisateur = new Utilisateur(nom, prenom, email, tel, identifiant, password, role, isAdmin);
+                Utilisateur modifierUtilisateur = new Utilisateur(nom, prenom, email, identifiant, password, role, isAdmin);
                 int id = utilisateurDAO.getUtilisateurId(identifiant);
                 if (id > 0) {
                     if (utilisateurDAO.modifierUtilisateur(id, modifierUtilisateur)) {
@@ -317,12 +313,13 @@ public class UtilisateurController {
                 }
             }
         }else{
+            clearForm();
             nomFieldError.setText("Choisir un utilisateur");
         }
     }
 
     //Delete utilisateur
-    public void supprimerMedicamentButtonOnAction(ActionEvent e) throws SQLException{
+    public void supprimerUtilisateurButtonOnAction(ActionEvent e) throws SQLException{
         if(isRowSelected()) {
             String nom = nomField.getText().trim();
             String prenom = prenomField.getText().trim();
@@ -357,7 +354,6 @@ public class UtilisateurController {
         nomField.clear();
         prenomField.clear();
         emailField.clear();
-        telephoneField.clear();
         identifiantField.clear();
         passwordField.clear();
         passwordIdentiqueField.clear();
@@ -370,7 +366,6 @@ public class UtilisateurController {
         nomFieldError.setText("");
         prenomFieldError.setText("");
         emailFieldError.setText("");
-        telephoneFieldError.setText("");
         identifiantFieldError.setText("");
         passwordFieldError.setText("");
         passwordIdentiqueFieldError.setText("");

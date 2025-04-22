@@ -31,6 +31,19 @@ public class ValidationUtils {
     }
 
     //Handling errors
+    public static boolean validateText(TextField field, Label errorLabel) throws SQLException {
+        String text = field.getText().trim();
+        if (text.isEmpty()) {
+            errorLabel.setText("Remplir ce champ");
+            return true;
+        } else if (containsNumbers(text)) {
+            errorLabel.setText("Donnée invalide !");
+            return true;
+        }
+        errorLabel.setText("");
+        return false;
+    }
+
     public static boolean validateName(TextField field, Label errorLabel) throws SQLException {
         String text = field.getText().trim();
         if (text.isEmpty()) {

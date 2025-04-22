@@ -24,6 +24,7 @@ public class FormeDAO {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Forme forme = new Forme(
+                        rs.getInt("id_forme"),
                         rs.getString("nom_forme")
                 );
                 formList.add(forme);
@@ -32,27 +33,46 @@ public class FormeDAO {
         return formList;
     }
 
-    public Forme getFormeByName(String nomForme) throws SQLException {
-        String nameForme = "SELECT * FROM forme WHERE nom_forme = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(nameForme)) {
+    public int getFormeId(String nomForme) throws SQLException{
+        String getId = "SELECT id_forme FROM forme WHERE nom_forme = ?";
+        try(PreparedStatement stmt = conn.prepareStatement(getId)){
             stmt.setString(1, nomForme);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return new Forme(
-                            rs.getString("nom_forme")
-                    );
+            try(ResultSet rs = stmt.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt("id_forme");
                 }
             }
         }
-        throw new SQLException("Forme not found: " + nomForme);
+        return -1;
     }
 
-    public boolean verifyMedicamentForme(String nameForme) throws SQLException{
-        String verifyForme = "SELECT 1 FROM medicament WHERE forme_nom_forme = ?";
-        try(PreparedStatement stmt = conn.prepareStatement(verifyForme)){
-            stmt.setString(1, nameForme);
-            return stmt.execute();
+    //Verify existing forme
+    public boolean verifyForme(String nomForme) {
+        String verifyIdentifiant = "SELECT COUNT(*) FROM forme WHERE TRIM(LOWER(nom_forme)) = TRIM(LOWER(?))";
+        try (PreparedStatement stmt = conn.prepareStatement(verifyIdentifiant)) {
+            stmt.setString(1, nomForme);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error checking forme: " + e.getMessage());
         }
+        return false;
+    }
+
+    public boolean verifyMedicamentForme(int idForme) {
+        String verifyForme = "SELECT COUNT(*) FROM medicament WHERE id_forme = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(verifyForme)) {
+            stmt.setInt(1, idForme);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error checking forme: " + e.getMessage());
+        }
+        return false;
     }
 
     public boolean addForme (Forme forme) throws SQLException{
@@ -63,10 +83,10 @@ public class FormeDAO {
         }
     }
 
-    public boolean deleteForme(String forme) throws SQLException{
-        String supprimerForme = "DELETE FROM forme WHERE nom_forme = ?";
+    public boolean deleteForme(int idForme) throws SQLException{
+        String supprimerForme = "DELETE FROM forme WHERE id_forme = ?";
         try(PreparedStatement stmt = conn.prepareStatement(supprimerForme)) {
-            stmt.setString(1, forme);
+            stmt.setInt(1, idForme);
             return stmt.executeUpdate() > 0;
         }
     }

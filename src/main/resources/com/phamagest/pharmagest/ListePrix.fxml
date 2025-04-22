@@ -32,6 +32,8 @@
          <VBox spacing="10" style="-fx-padding: 10; -fx-background-color: #f8f9fa; -fx-background-radius: 5;">
             <HBox alignment="CENTER_LEFT" spacing="20">
                <VBox spacing="5">
+                  <TextField fx:id="idField" visible="false" managed="false"/>
+
                   <Label text="Médicament" />
                   <TextField fx:id="medicamentSearchField" disable="true" prefHeight="26.0" prefWidth="150.0" style="-fx-background-radius: 4;" />
                   <Label fx:id="medicamentError" style="-fx-text-fill: #e74c3c;" />
@@ -55,6 +57,7 @@
          <!-- Price List Table -->
          <TableView fx:id="listPrixTable">
             <columns>
+               <TableColumn fx:id="idColumn" text="ID" visible="false" />
                <TableColumn fx:id="medicamentColumn" text="Médicament" />
                <TableColumn fx:id="prixachatColumn" text="PU Achat" />
                <TableColumn fx:id="prixventeColumn" text="PU Vente" />

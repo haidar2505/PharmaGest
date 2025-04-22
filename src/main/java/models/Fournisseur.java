@@ -1,13 +1,36 @@
 package models;
 
 public class Fournisseur {
-    private Integer id;
+    private Integer idFournisseur;
     private String nom;
     private String adresse;
-    private String telephone;
     private String email;
     private String pays;
 
+    // Constructeur for create fournisseur
+    public Fournisseur(String nom, String email, String adresse, String pays) {
+        this.nom = nom;
+        this.pays = pays;
+        this.email = email;
+        this.adresse = adresse;
+    }
+
+    // Constructeur for update, retrieve all founisseurs or delete fournisseur
+    public Fournisseur(Integer idFournisseur, String nom, String email, String adresse, String pays) {
+        this.idFournisseur = idFournisseur;
+        this.nom = nom;
+        this.email = email;
+        this.adresse = adresse;
+        this.pays = pays;
+    }
+
+    public Fournisseur(int getidFournisseur) {
+        this.idFournisseur = getidFournisseur;
+    }
+
+    public Fournisseur(String nom) {
+        this.nom = nom;
+    }
 
     public String getNom() {
         return nom;
@@ -23,14 +46,6 @@ public class Fournisseur {
 
     public void setAdresse(String adresse) {
         this.adresse = adresse;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
     }
 
     public String getEmail() {
@@ -49,47 +64,14 @@ public class Fournisseur {
         this.pays = pays;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdFournisseur() {
+        return idFournisseur;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-
-    // Constructeur for create fournisseur
-    public Fournisseur(String pays, String nom, String telephone, String email, String adresse) {
-        this.nom = nom;
-        this.pays = pays;
-        this.telephone = telephone;
-        this.email = email;
-        this.adresse = adresse;
-    }
-
-    // Constructeur for update, retrieve all founisseurs or delete fournisseur
-    public Fournisseur(Integer id, String pays, String nom, String telephone, String email, String adresse) {
-        this.id = id;
-        this.pays = pays;
-        this.nom = nom;
-        this.telephone = telephone;
-        this.email = email;
-        this.adresse = adresse;
-
+    public void setIdFournisseur(Integer idFournisseur) {
+        this.idFournisseur = idFournisseur;
     }
 
 
-    //
-    @Override
-    public String toString() {
-        return "Fournisseur{" +
-                "id=" + id +
-                ", pays='" + pays + '\'' +
-                ", nom='" + nom + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", email='" + email + '\'' +
-                ", adresse='" + adresse + '\'' +
-                '}';
-    }
 
 }

@@ -1,25 +1,41 @@
 package models;
 
 public class Forme {
-    private String nomForme;
+    private int idForme;
+    private String nom;
 
-    // Constructeur
+    // Constructors
+    public Forme() {
+    }
+
+    public Forme(int idForme, String nom) {
+        this.idForme = idForme;
+        this.nom = nom;
+    }
+
+    public Forme(int getidForme) {
+        this.idForme = getidForme;
+    }
+
     public Forme(String nomForme) {
-        this.nomForme = nomForme;
+        this.nom = nomForme;
     }
 
-    @Override
-    public String toString() {
-        return nomForme;
+    // Getters and Setters
+    public int getIdForme() {
+        return idForme;
     }
 
-    // Getters et Setters
+    public void setIdForme(int idForme) {
+        this.idForme = idForme;
+    }
+
     public String getNomForme() {
-        return nomForme;
+        return nom;
     }
 
-    public void setNomForme(String nomForme) {
-        this.nomForme = nomForme;
+    public void setNomForme(String nom) {
+        this.nom = nom;
     }
 
 }

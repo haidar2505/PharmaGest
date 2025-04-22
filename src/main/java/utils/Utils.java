@@ -2,6 +2,7 @@ package utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import dataBase.DatabaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,9 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,12 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Utils {
-    /*
-    public static void main(String[] args){
-        System.out.println(hashWithSHA256("@Haidar1!"));
-    }
-    */
-
     /**
      * Hashes a given text using the SHA-256 algorithm.
      *

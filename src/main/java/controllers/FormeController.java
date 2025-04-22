@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import models.Forme;
 import utils.Utils;
 import utils.ValidationUtils;
@@ -30,19 +31,23 @@ public class FormeController {
     }
 
     @FXML private TableView<Forme> formeTable;
+    @FXML private TableColumn<Forme, String> idColumn;
     @FXML private TableColumn<Forme, String> formeColumn;
 
+    @FXML private TextField idField;
     @FXML private TextField formeSearchField;
+
     @FXML private Label formeError;
 
-    private String originalForme;
 
     public void initialize() throws SQLException{
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("idForme"));
+//        formeColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
         formeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomForme()));
 
         formeTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                originalForme = newSelection.getNomForme();
+                idField.setText(String.valueOf(newSelection.getIdForme()));
                 formeSearchField.setText(newSelection.getNomForme());
             }
         });
@@ -78,10 +83,12 @@ public class FormeController {
     }
 
     public void addFormeButtonOnAction(ActionEvent e) throws SQLException {
-        if(Objects.equals(originalForme, formeSearchField.getText())){
+        FormeDAO formeDAO = new FormeDAO();
+        String search = formeSearchField.getText().trim();
+
+        if(formeDAO.verifyForme(search)){
             formeError.setText("Forme existant");
         }else{
-            FormeDAO formeDAO = new FormeDAO();
             boolean isInvalid = false;
 
             if (ValidationUtils.validateForme(formeSearchField, formeError)) isInvalid = true;
@@ -100,6 +107,7 @@ public class FormeController {
 
     public void supprimerFormeButtonOnAction(ActionEvent e) throws SQLException {
         if(isRowSelected()) {
+            int id = Integer.parseInt(idField.getText());
             String forme = formeSearchField.getText();
             if (forme.isEmpty()) {
                 formeError.setText("Choisir une forme");
@@ -110,10 +118,10 @@ public class FormeController {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     FormeDAO formeDAO = new FormeDAO();
-                    if (formeDAO.verifyMedicamentForme(forme)) {
+                    if (formeDAO.verifyMedicamentForme(id)) {
                         formeError.setText("Suppression invalide !");
                     } else {
-                        formeDAO.deleteForme(forme);
+                        formeDAO.deleteForme(id);
                         loadFormeData();
                         clearSearch();
                     }
@@ -128,8 +136,6 @@ public class FormeController {
         formeSearchField.clear();
 
         formeError.setText("");
-
-        originalForme = null;
     }
 }
 
