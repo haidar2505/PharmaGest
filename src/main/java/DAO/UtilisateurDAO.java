@@ -22,6 +22,7 @@ public class UtilisateurDAO {
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Utilisateur utilisateur = new Utilisateur(
+                        rs.getInt("id_utilisateur"),
                         rs.getString("nom"),
                         rs.getString("prenom"),
                         rs.getString("email"),

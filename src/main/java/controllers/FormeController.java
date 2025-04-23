@@ -42,7 +42,6 @@ public class FormeController {
 
     public void initialize() throws SQLException{
         idColumn.setCellValueFactory(new PropertyValueFactory<>("idForme"));
-//        formeColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
         formeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomForme()));
 
         formeTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {

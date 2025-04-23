@@ -49,8 +49,10 @@
                <TableColumn fx:id="puachatColumn" text="Prix achat (€)" />
                <TableColumn fx:id="puventeColumn" text="Prix vente (€)" />
                <TableColumn fx:id="qtestockeColumn" text="Stock" />
-               <TableColumn fx:id="ordonnanceColumn" text="Ordonnance" visible="false" />
-               <TableColumn fx:id="fournisseurColumn" text="Fournisseur" visible="false" />
+               <TableColumn fx:id="stockMinColumn" text="Stock" visible="false"/>
+               <TableColumn fx:id="stockMaxColumn" text="Stock" visible="false"/>
+               <TableColumn fx:id="ordonnanceColumn" text="Ordonnance" />
+               <TableColumn fx:id="fournisseurColumn" text="Fournisseur" />
             </columns>
             <columnResizePolicy>
                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

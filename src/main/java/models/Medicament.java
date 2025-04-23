@@ -3,7 +3,8 @@ package models;
 public class Medicament {
     private int idMedicament;
     private String dci;
-    private String dosage;
+    private int dosage;
+    private String dosageUnite;
     private double puAchat;
     private double puVente;
     private int stock;
@@ -26,12 +27,13 @@ public class Medicament {
     }
 
     // Constructor with IDs
-    public Medicament(int idMedicament, String dci, String dosage, double puAchat, double puVente,
+    public Medicament(int idMedicament, String dci, int dosage, String dosageUnite, double puAchat, double puVente,
                       int stock, int stockMin, int stockMax, boolean ordonnance,
                       Fournisseur fournisseur, Famille famille, Forme forme) {
         this.idMedicament = idMedicament;
         this.dci = dci;
         this.dosage = dosage;
+        this.dosageUnite = dosageUnite;
         this.puAchat = puAchat;
         this.puVente = puVente;
         this.stock = stock;
@@ -43,11 +45,12 @@ public class Medicament {
         this.forme = forme;
     }
 
-    public Medicament(String dci, String dosage, double puAchat, double puVente,
+    public Medicament(String dci, int dosage, String dosageUnite, double puAchat, double puVente,
                       int stock, int stockMin, int stockMax, boolean ordonnance,
                       int idForme, int idFamille, int idFournisseur) {
         this.dci = dci;
         this.dosage = dosage;
+        this.dosageUnite = dosageUnite;
         this.puAchat = puAchat;
         this.puVente = puVente;
         this.stock = stock;
@@ -79,11 +82,23 @@ public class Medicament {
         this.idForme = forme != null ? forme.getIdForme() : 0;
     }
 
-    public Medicament(int idMedicament, String dci, double prixunitAchat, double prixunitVente) {
+    public Medicament(int idMedicament, String dci, double puAchat, double puVente) {
         this.idMedicament = idMedicament;
         this.dci = dci;
-        this.puAchat = prixunitAchat;
-        this.puVente = prixunitVente;
+        this.puAchat = puAchat;
+        this.puVente = puVente;
+    }
+
+    public Medicament(String dci, double puAchat, double puVente) {
+        this.dci = dci;
+        this.puAchat = puAchat;
+        this.puVente = puVente;
+    }
+
+    public Medicament(int stock, int stockMin, int stockMax) {
+        this.stock = stock;
+        this.stockMin = stockMin;
+        this.stockMax = stockMax;
     }
 
     // Getters and Setters for all fields
@@ -103,12 +118,20 @@ public class Medicament {
         this.dci = dci;
     }
 
-    public String getDosage() {
+    public int getDosage() {
         return dosage;
     }
 
-    public void setDosage(String dosage) {
+    public void setDosage(int dosage) {
         this.dosage = dosage;
+    }
+
+    public String getDosageUnite() {
+        return dosageUnite;
+    }
+
+    public void setDosageUnite(String dosageUnite) {
+        this.dosageUnite = dosageUnite;
     }
 
     public double getPuAchat() {
@@ -219,5 +242,8 @@ public class Medicament {
         if (this.forme != null) {
             this.forme.setIdForme(idForme);
         }
+    }
+    public String getDosageComplet() {
+        return dosage + dosageUnite;
     }
 }

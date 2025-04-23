@@ -36,13 +36,13 @@ public class FamilleController {
 
 
     public void searchButtonAnnulerOnAction(ActionEvent e) throws SQLException {
-        familleSearchField.clear();
+        clearFamille();
     }
 
     public void initialize() throws SQLException{
         idColumn.setCellValueFactory(new PropertyValueFactory<>("idFamille"));
-        familleColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
-//        familleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomFamille()));
+//        familleColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        familleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNomFamille()));
 
         familleTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -52,6 +52,10 @@ public class FamilleController {
         });
 
         loadFamilleData();
+    }
+
+    public boolean isRowSelected() {
+        return familleTable.getSelectionModel().getSelectedItem() != null;
     }
 
     private ObservableList<Famille> familleList = FXCollections.observableArrayList();
@@ -102,25 +106,30 @@ public class FamilleController {
     }
 
     public void supprimerFamilleButtonOnAction(ActionEvent e) throws SQLException {
-        int id = Integer.parseInt(idField.getText());
-        String famille = familleSearchField.getText();
-        if(famille.isEmpty()){
-            familleError.setText("Choisir une famille");
-        }else{
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Supprimer forme");
-            alert.setHeaderText("Vous voulez supprimer la forme : " + famille);
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                FamilleDAO familleDAO = new FamilleDAO();
-                if(familleDAO.verifyMedicamentFamille(id)){
-                    familleError.setText("Suppression invalide !");
-                }else {
-                    familleDAO.deleteFamille(famille);
-                    loadFamilleData();
-                    clearFamille();
+        if(isRowSelected()) {
+
+            int id = Integer.parseInt(idField.getText());
+            String famille = familleSearchField.getText();
+            if (famille.isEmpty()) {
+                familleError.setText("Choisir une famille");
+            } else {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Supprimer forme");
+                alert.setHeaderText("Vous voulez supprimer la forme : " + famille);
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    FamilleDAO familleDAO = new FamilleDAO();
+                    if (familleDAO.verifyMedicamentFamille(id)) {
+                        familleError.setText("Suppression invalide !");
+                    } else {
+                        familleDAO.deleteFamille(famille);
+                        loadFamilleData();
+                        clearFamille();
+                    }
                 }
             }
+        }else{
+            familleError.setText("Choisir une famille");
         }
     }
 

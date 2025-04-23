@@ -25,6 +25,7 @@ public class FournisseurDAO {
             ResultSet rs = stmt.executeQuery()) {
             while(rs.next()) {
                 Fournisseur fournisseur = new Fournisseur(
+                    rs.getInt("id_fournisseur"),
                     rs.getString("nom"),
                     rs.getString("email"),
                     rs.getString("adresse"),
@@ -49,6 +50,20 @@ public class FournisseurDAO {
             }
         } catch (SQLException e) {
             System.err.println("Error checking nom: " + e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean verifyMedicamentFournisseur(int idFournisseur) {
+        String verifyForme = "SELECT COUNT(*) FROM medicament WHERE id_fournisseur = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(verifyForme)) {
+            stmt.setInt(1, idFournisseur);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error checking fournisseur: " + e.getMessage());
         }
         return false;
     }
@@ -87,7 +102,7 @@ public class FournisseurDAO {
             stmt.setString(2, forunisseur.getEmail());
             stmt.setString(3, forunisseur.getAdresse());
             stmt.setString(4, forunisseur.getPays());
-            stmt.setInt(8, fourID);
+            stmt.setInt(5, fourID);
             return stmt.executeUpdate() > 0;
         }
     }

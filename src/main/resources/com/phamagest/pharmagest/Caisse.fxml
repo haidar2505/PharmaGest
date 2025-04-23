@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.VenteController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CaisseController">
     <top>
         <HBox alignment="CENTER_LEFT" style="-fx-background-color: #2c3e50; -fx-padding: 15;">
-            <Button fx:id="dashboardButton" mnemonicParsing="false" onAction="#dashboardButtonOnAction"
-                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 4;"
-                    text="Retour">
+            <Button fx:id="dashboardButton" mnemonicParsing="false" onAction="#dashboardButtonOnAction" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 4;" text="Retour">
             </Button>
             <Label style="-fx-text-fill: white; -fx-padding: 0 0 0 20;" text="Gestion des Caisses">
                 <font>
@@ -22,43 +27,51 @@
     </top>
 
     <center>
-        <VBox style="-fx-padding: 20;" spacing="15">
+        <VBox spacing="15" style="-fx-padding: 20;">
             <!-- Items Table -->
-            <TableView fx:id="itemsTable" style="-fx-background-radius: 5;">
+            <TableView fx:id="caisseTable" style="-fx-background-radius: 5;">
                 <columns>
-                    <TableColumn fx:id="medicamentColumn" text="Médicament" prefWidth="200"/>
-                    <TableColumn fx:id="quantiteColumn" text="Quantité" prefWidth="100"/>
-                    <TableColumn fx:id="prixColumn" text="Prix Unitaire" prefWidth="100"/>
-                    <TableColumn fx:id="totalColumn" text="Total" prefWidth="100"/>
+                    <TableColumn fx:id="idMedicamentColumn" visible="false" />
+                    <TableColumn fx:id="medicamentColumn" prefWidth="200" text="Médicament" />
+                    <TableColumn fx:id="quantiteColumn" prefWidth="100" text="Quantité" />
+                    <TableColumn fx:id="puVenteColumn" prefWidth="100" text="Prix Unitaire" />
+                    <TableColumn fx:id="totalColumn" prefWidth="100" text="Total" />
                 </columns>
             </TableView>
 
             <!-- Client Info -->
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Label text="Client:" style="-fx-font-weight: bold;"/>
-                <Label fx:id="clientLabel" style="-fx-font-style: italic;"/>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label style="-fx-font-weight: bold;" text="Client:" />
+                <Label fx:id="clientLabel" style="-fx-font-style: italic;" />
             </HBox>
 
             <!-- Payment Section -->
             <GridPane hgap="10" vgap="10">
                 <columnConstraints>
-                    <ColumnConstraints prefWidth="150"/>
-                    <ColumnConstraints prefWidth="200"/>
+                    <ColumnConstraints prefWidth="150.0" />
+                    <ColumnConstraints prefWidth="200.0" />
+               <ColumnConstraints prefWidth="200.0" />
                 </columnConstraints>
 
-                <Label text="Total à payer:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                <Label fx:id="totalLabel" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                <Label style="-fx-font-weight: bold;" text="Total à payer:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label fx:id="totalLabel" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                <Label text="Montant donné:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                <TextField fx:id="montantDonneField" promptText="Entrez le montant" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Label style="-fx-font-weight: bold;" text="Montant donné:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="montantDonneField" promptText="Entrez le montant" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                <Label text="Monnaie rendue:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                <Label fx:id="monnaieLabel" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <Label style="-fx-font-weight: bold;" text="Monnaie rendue:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label fx:id="monnaieLabel" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="montantFieldError" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
             </GridPane>
 
             <!-- Validate Button -->
-            <Button fx:id="validerButton" text="Valider Paiement"
-                    style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 150;"/>
+            <TextField fx:id="idMedicamentField" visible="false" />
+            <Button onAction="#validerButtonOnAction" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 150;" text="Valider Paiement" />
         </VBox>
     </center>
 </BorderPane>

@@ -41,11 +41,13 @@ public class FournisseurController {
     }
 
     @FXML public TableView<Fournisseur> fournisseurTable;
-    @FXML private TableColumn<Fournisseur, Integer> nomColumn;
+    @FXML private TableColumn<Fournisseur, Integer> idColumn;
+    @FXML private TableColumn<Fournisseur, String> nomColumn;
     @FXML private TableColumn<Fournisseur, String> emailColumn;
     @FXML private TableColumn<Fournisseur, String> adresseColumn;
     @FXML private TableColumn<Fournisseur, String> paysColumn;
 
+    @FXML private TextField idField;
     @FXML private TextField nomField;
     @FXML private TextField emailField;
     @FXML private TextField adresseField;
@@ -60,9 +62,6 @@ public class FournisseurController {
 
     private final ObservableList<String> columns = FXCollections.observableArrayList("Nom", "Email", "Adresse", "Pays");
 
-    // Declaration of ObservableList for Fournisseurs
-    private final ObservableList<Fournisseur> fournisseurObservableList = FXCollections.observableArrayList();
-
     @FXML
     public void initialize() throws SQLException {
         if (fournisseurTable != null && searchComboBox != null) {
@@ -71,6 +70,7 @@ public class FournisseurController {
             searchComboBox.setItems(columns);
 
             //Table columns
+            idColumn.setCellValueFactory(new PropertyValueFactory<>("idFournisseur"));
             nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
             emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
             adresseColumn.setCellValueFactory(new PropertyValueFactory<>("adresse"));
@@ -79,6 +79,7 @@ public class FournisseurController {
             fournisseurTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
 
+                    idField.setText(String.valueOf(newSelection.getIdFournisseur()));
                     nomField.setText(newSelection.getNom());
                     emailField.setText(newSelection.getEmail());
                     adresseField.setText(newSelection.getAdresse());
@@ -209,21 +210,20 @@ public class FournisseurController {
             }
 
             if (!isInvalid) {
+                int id = Integer.parseInt(idField.getText().trim());
                 String nom = nomField.getText().trim();
                 String email = emailField.getText().trim();
                 String adresse = adresseField.getText().trim();
                 String pays = paysField.getText().trim();
 
                 Fournisseur modifierFournisseur = new Fournisseur(nom, email, adresse, pays);
-                int id = fournisseurDAO.getFournisseurId(nom);
-                if (id > 0) {
-                    if (fournisseurDAO.modifierForunisseur(id, modifierFournisseur)) {
-                        loadFournisseurData();
-                        clearForm();
-                    }
+                if (fournisseurDAO.modifierForunisseur(id, modifierFournisseur)) {
+                    loadFournisseurData();
+                    clearForm();
                 }
             }
         }else{
+            clearForm();
             nomFieldError.setText("Choisir un fournisseur");
         }
     }
@@ -231,6 +231,7 @@ public class FournisseurController {
     //Delete fournisseur
     public void supprimerFournisseurButtonOnAction(ActionEvent e) throws SQLException{
         if(isRowSelected()) {
+            int id = Integer.parseInt(idField.getText().trim());
             String nom = nomField.getText().trim();
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -239,8 +240,9 @@ public class FournisseurController {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 FournisseurDAO fournisseurDAO = new FournisseurDAO();
-                int id = fournisseurDAO.getFournisseurId(nom);
-                if (id > 0) {
+                if(fournisseurDAO.verifyMedicamentFournisseur(id)){
+                    searchError.setText("Suppression invalide !");
+                }else {
                     fournisseurDAO.deleteFournisseur(id);
                     loadFournisseurData();
                     clearForm();
@@ -268,5 +270,6 @@ public class FournisseurController {
         emailFieldError.setText("");
         adresseFieldError.setText("");
         paysFieldError.setText("");
+        searchError.setText("");
     }
 }

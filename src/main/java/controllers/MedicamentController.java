@@ -40,6 +40,8 @@ public class MedicamentController {
     @FXML private TableColumn<Medicament, Double> puachatColumn;
     @FXML private TableColumn<Medicament, Double> puventeColumn;
     @FXML private TableColumn<Medicament, String> qtestockeColumn;
+    @FXML private TableColumn<Medicament, String> stockMinColumn;
+    @FXML private TableColumn<Medicament, String> stockMaxColumn;
     @FXML private TableColumn<Medicament, String> ordonnanceColumn;
     @FXML private TableColumn<Medicament, String> fournisseurColumn;
 
@@ -96,12 +98,13 @@ public class MedicamentController {
             dciColumn.setCellValueFactory(new PropertyValueFactory<>("dci"));
             formeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getForme().getNomForme()));
             familleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFamille().getNomFamille()));
-            dosageColumn.setCellValueFactory(new PropertyValueFactory<>("dosage"));
+            dosageColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDosageComplet()));
             puachatColumn.setCellValueFactory(new PropertyValueFactory<>("puAchat"));
             puventeColumn.setCellValueFactory(new PropertyValueFactory<>("puVente"));
             qtestockeColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
-            familleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFournisseur().getNom()));
-            ordonnanceColumn.setCellValueFactory(new PropertyValueFactory<>("ordonnance"));
+            stockMinColumn.setCellValueFactory(new PropertyValueFactory<>("stockMin"));
+            stockMaxColumn.setCellValueFactory(new PropertyValueFactory<>("stockMax"));
+            fournisseurColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFournisseur().getNom()));
             ordonnanceColumn.setCellValueFactory(cellData -> {
                 boolean isOrdonnance = cellData.getValue().isOrdonnance();
                 return new SimpleStringProperty(isOrdonnance ? "Oui" : "Non");
@@ -115,10 +118,13 @@ public class MedicamentController {
                     medicamentField.setText(newSelection.getDci());
                     formeComboBox.setValue(newSelection.getForme().getNomForme());
                     familleComboBox.setValue(newSelection.getFamille().getNomFamille());
-                    dosageField.setText(newSelection.getDosage());
+                    dosageField.setText(String.valueOf(newSelection.getDosage()));
+                    uniteComboBox.setValue(newSelection.getDosageUnite());
                     puachatField.setText(String.valueOf(newSelection.getPuAchat()));
                     puventeField.setText(String.valueOf(newSelection.getPuVente()));
                     qtestockeField.setText(String.valueOf(newSelection.getStock()));
+                    stockMinField.setText(String.valueOf(newSelection.getStockMin()));
+                    stockMaxField.setText(String.valueOf(newSelection.getStockMax()));
                     ordonnanceComboBox.setValue(String.valueOf(newSelection.isOrdonnance()));
                     fournisseurComboBox.setValue(newSelection.getFournisseur().getNom());
                 }
@@ -226,16 +232,22 @@ public class MedicamentController {
 
     public void medicamentAddButtonOnAction(ActionEvent e) throws SQLException{
         MedicamentDAO medicamentDAO = new MedicamentDAO();
+        FormeDAO formeDAO = new FormeDAO();
 
         String verifydci = medicamentField.getText().trim();
         String verifyforme = formeComboBox.getValue();
-        String verifydosage = dosageField.getText().trim() + uniteComboBox.getValue();
-
+        int verifydosage;
+        if(dosageField.getText().isEmpty()){
+            verifydosage = 0;
+        }else{
+            verifydosage = Integer.parseInt(dosageField.getText().trim());
+        }
+        int getIdForme = formeDAO.getFormeId(verifyforme);
 
         boolean isInvalid = false;
         boolean isOrdonnace = false;
 
-        if(medicamentDAO.verifyExistingMedicament(verifydci, verifydosage, verifyforme)){
+        if(medicamentDAO.verifyExistingMedicament(verifydci, verifydosage, getIdForme)){
             medicamentFieldError.setText("Médicament existant");
             isInvalid = true;
         }else{
@@ -247,13 +259,7 @@ public class MedicamentController {
         if (ValidationUtils.validateQteStock(qtestockeField, qtestockeFieldError)) isInvalid = true;
         if (ValidationUtils.validateQteStock(stockMinField, stockMinFieldError)) isInvalid = true;
         if (ValidationUtils.validateQteStock(stockMaxField, stockMaxFieldError)) isInvalid = true;
-
-        if (dosageField.getText().isEmpty()) {
-            dosageFieldError.setText("Entrez le dosage du médicament en mg ou g");
-            isInvalid = true;
-        } else {
-            dosageFieldError.setText("");
-        }
+        if (ValidationUtils.validateQteStock(dosageField, dosageFieldError)) isInvalid = true;
 
         if (uniteComboBox.getValue() == null) {
             uniteFieldError.setText("Choisir l'unité du dosage");
@@ -293,7 +299,6 @@ public class MedicamentController {
         }
 
         if (!isInvalid) {
-            FormeDAO formeDAO = new FormeDAO();
             FamilleDAO familleDAO = new FamilleDAO();
             FournisseurDAO fournisseurDAO = new FournisseurDAO();
 
@@ -306,13 +311,14 @@ public class MedicamentController {
             int qteStock = Integer.parseInt(qtestockeField.getText().trim());
             int stockMin = Integer.parseInt(stockMinField.getText().trim());
             int stockMax = Integer.parseInt(stockMaxField.getText().trim());
-            String dosage = dosageField.getText().trim() + uniteComboBox.getValue();
+            int dosage = Integer.parseInt(dosageField.getText().trim());
+            String dosageUnite = uniteComboBox.getValue();
 
             int idForme = formeDAO.getFormeId(nomforme);
             int idFamille = familleDAO.getFamilleId(nomFamille);
             int idFournisseur = fournisseurDAO.getFournisseurId(nomFournisseur);
 
-            Medicament newMedicament = new Medicament(dci, dosage, puAchat, puVente, qteStock, stockMin, stockMax, isOrdonnace, idForme, idFamille, idFournisseur);
+            Medicament newMedicament = new Medicament(dci, dosage, dosageUnite, puAchat, puVente, qteStock, stockMin, stockMax, isOrdonnace, idForme, idFamille, idFournisseur);
             if (medicamentDAO.addMedicament(newMedicament)) {
                 loadMedicamentData();
                 clearForm();
@@ -334,13 +340,7 @@ public class MedicamentController {
             if (ValidationUtils.validateQteStock(qtestockeField, qtestockeFieldError)) isInvalid = true;
             if (ValidationUtils.validateQteStock(stockMinField, stockMinFieldError)) isInvalid = true;
             if (ValidationUtils.validateQteStock(stockMaxField, stockMaxFieldError)) isInvalid = true;
-
-            if (dosageField.getText().isEmpty()) {
-                dosageFieldError.setText("Entrez le dosage du médicament en mg ou g");
-                isInvalid = true;
-            } else {
-                dosageFieldError.setText("");
-            }
+            if (ValidationUtils.validateQteStock(dosageField, dosageFieldError)) isInvalid = true;
 
             if (uniteComboBox.getValue() == null) {
                 uniteFieldError.setText("Choisir l'unité du dosage");
@@ -394,13 +394,14 @@ public class MedicamentController {
                 int qteStock = Integer.parseInt(qtestockeField.getText().trim());
                 int stockMin = Integer.parseInt(stockMinField.getText().trim());
                 int stockMax = Integer.parseInt(stockMaxField.getText().trim());
-                String dosage = dosageField.getText().trim() + uniteComboBox.getValue();
+                int dosage = Integer.parseInt(dosageField.getText().trim());
+                String dosageUnite = uniteComboBox.getValue();
 
                 int idForme = formeDAO.getFormeId(nomforme);
                 int idFamille = familleDAO.getFamilleId(nomFamille);
                 int idFournisseur = fournisseurDAO.getFournisseurId(nomFournisseur);
 
-                Medicament modifierMedicament = new Medicament(dci, dosage, puAchat, puVente, qteStock, stockMin, stockMax, isOrdonnace, idForme, idFamille, idFournisseur);
+                Medicament modifierMedicament = new Medicament(dci, dosage, dosageUnite, puAchat, puVente, qteStock, stockMin, stockMax, isOrdonnace, idForme, idFamille, idFournisseur);
                 if (medicamentDAO.modifierMedicament(idDci, modifierMedicament)) {
                     loadMedicamentData();
                     clearForm();

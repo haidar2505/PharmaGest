@@ -14,7 +14,8 @@ public class Utilisateur {
     private Date lastLogin;
 
     // Colonnes
-    public Utilisateur(String nom, String prenom, String email, String identifiant, String role, boolean isAdmin) {
+    public Utilisateur(int idUtilisateur, String nom, String prenom, String email, String identifiant, String role, boolean isAdmin) {
+        this.idUtilisateur = idUtilisateur;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
