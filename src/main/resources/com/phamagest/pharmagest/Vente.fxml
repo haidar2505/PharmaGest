@@ -103,9 +103,8 @@
                 <Label style="-fx-font-weight: bold;" text="Panier de vente"/>
                 <TableView fx:id="validationTable" style="-fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);">
                     <columns>
-                        <TableColumn fx:id="idmedicamentPanierColumn" visible="false"/>
+                        <TableColumn fx:id="numVentePanierColumn" visible="false"/>
                         <TableColumn fx:id="medicamentPanierColumn" text="Médicament"/>
-                        <TableColumn fx:id="formePanierColumn" text="Forme"/>
                         <TableColumn fx:id="qtePanierColumn" text="Quantité"/>
                         <TableColumn fx:id="prixPanierColumn" text="Prix unité"/>
                         <TableColumn fx:id="totalPanierColumn" text="Total"/>
@@ -121,7 +120,7 @@
                 <Label style="-fx-font-weight: bold;" text="Total:"/>
                 <Label fx:id="totalLabel" style="-fx-font-weight: bold; -fx-font-size: 16;"/>
                 <Label fx:id="validationError" style="-fx-text-fill: #e74c3c;"/>
-                <TextField fx:id="idMedicamentPanierField" visible="false"/>
+                <TextField fx:id="numVentePanierField" visible="false"/>
                 <Button onAction="#validerVenteButtonOnAction"
                         style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 150; -fx-pref-height: 40;"
                         text="Valider la vente"/>

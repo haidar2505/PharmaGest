@@ -40,6 +40,14 @@ public class Vente {
         this.idMedicament = idMedicament;
     }
 
+    public Vente(String numVente, String dci, double puVente, int qteDemande, BigDecimal montant) {
+        this.numVente = numVente;
+        this.dci = dci;
+        this.puVente = puVente;
+        this.qteDemande = qteDemande;
+        this.montant = montant;
+    }
+
     public Vente(int idMedicament, String dci, double puVente, int qteDemande, BigDecimal montant) {
         this.idMedicament = idMedicament;
         this.dci = dci;

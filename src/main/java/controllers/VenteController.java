@@ -48,7 +48,7 @@ public class VenteController {
     @FXML private TextField medicamentSearchField;
     @FXML private TextField quantiteField;
 
-    @FXML private TextField idMedicamentPanierField;
+    @FXML private TextField numVentePanierField;
 
     @FXML private Label searchError;
     @FXML private Label typeVenteError;
@@ -68,7 +68,7 @@ public class VenteController {
     @FXML private TableColumn<Medicament, String> puVenteColumn;
 
     @FXML private TableView<Vente> validationTable;
-    @FXML private TableColumn<Vente, String> idmedicamentPanierColumn;
+    @FXML private TableColumn<Vente, String> numVentePanierColumn;
     @FXML private TableColumn<Vente, String> medicamentPanierColumn;
     @FXML private TableColumn<Vente, String> qtePanierColumn;
     @FXML private TableColumn<Vente, String> prixPanierColumn;
@@ -108,12 +108,12 @@ public class VenteController {
 
             validationTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
-                    idMedicamentPanierField.setText(String.valueOf(newSelection.getIdMedicament()));
+                    numVentePanierField.setText(String.valueOf(newSelection.getIdMedicament()));
                     totalLabel.setText(String.valueOf(newSelection.getMontant()));
                 }
             });
 
-            idmedicamentPanierColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+            numVentePanierColumn.setCellValueFactory(new PropertyValueFactory<>("numVente"));
             medicamentPanierColumn.setCellValueFactory(new PropertyValueFactory<>("dci"));
             qtePanierColumn.setCellValueFactory(new PropertyValueFactory<>("qteDemande"));
             prixPanierColumn.setCellValueFactory(new PropertyValueFactory<>("puVente"));
@@ -216,7 +216,6 @@ public class VenteController {
                 String typeVente = typeVenteComboBox.getValue().trim();
                 double puVente = medicamentDAO.getMedicamentPUvente(idMedicament);
                 BigDecimal montant = BigDecimal.valueOf(puVente * qteDemande);
-                String facturePDF = "facture_pdf";
 
                 ObservableList<Medicament> stockList = medicamentDAO.getMedicamentStock(idMedicament);
                 Medicament stockData = stockList.get(0);
@@ -231,7 +230,6 @@ public class VenteController {
                     String prenomMedecin = prenomMedecinField.getText().trim();
                     Prescription ajouterPrescription = new Prescription(nomPatient, prenomPatient, nomMedecin, prenomMedecin);
                     Vente ajouterVente = new Vente(qteDemande, montant, false, idMedicament);
-                    Facture ajouterFacture = new Facture(facturePDF);
                     if (venteDAO.addPrescription(ajouterPrescription) && venteDAO.updateNewStock(idMedicament, newStock) && venteDAO.addVente(ajouterVente)) {
                         loadSelectionTable();
                     }else{
@@ -239,7 +237,6 @@ public class VenteController {
                     }
                 }else if(typeVente.equals("Libre")){
                     Vente ajouterVente = new Vente(qteDemande, montant, false, idMedicament);
-                    Facture ajouterFacture = new Facture(facturePDF);
                     if (venteDAO.addVente(ajouterVente) && venteDAO.updateNewStock(idMedicament, newStock)) {
                         loadSelectionTable();
                         loadPanierTable();
@@ -253,11 +250,11 @@ public class VenteController {
 
     public void validerVenteButtonOnAction(ActionEvent e) throws SQLException {
         if(isRowSelectedPanier()) {
-            int idMedicamentPanier = Integer.parseInt(idMedicamentPanierField.getText());
+            String numVente = numVentePanierField.getText();
 
             VenteDAO venteDAO = new VenteDAO();
 
-            if (venteDAO.validerVentePanier(idMedicamentPanier)) {
+            if (venteDAO.validerVentePanier(numVente)) {
                 loadSelectionTable();
                 loadPanierTable();
                 clearForm();
@@ -277,7 +274,7 @@ public class VenteController {
         idMedicamentField.clear();
         medicamentSearchField.clear();
         quantiteField.clear();
-        idMedicamentPanierField.clear();
+        numVentePanierField.clear();
 
         nomPatientError.setText("");
         prenomPatientError.setText("");
@@ -288,9 +285,4 @@ public class VenteController {
         quantiteError.setText("");
         totalLabel.setText("");
     }
-
-
-
-
 }
-

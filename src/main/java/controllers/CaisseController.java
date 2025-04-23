@@ -30,12 +30,12 @@ public class CaisseController {
     @FXML private Label totalLabel;
     @FXML private Label montantFieldError;
 
-    @FXML private TextField idMedicamentField;
+    @FXML private TextField numVenteField;
     @FXML private TextField medicamentSearchField;
     @FXML private TextField quantiteField;
 
     @FXML private TableView<Vente> caisseTable;
-    @FXML private TableColumn<Vente, String> idMedicamentColumn;
+    @FXML private TableColumn<Vente, String> numVenteColumn;
     @FXML private TableColumn<Vente, String> medicamentColumn;
     @FXML private TableColumn<Vente, String> quantiteColumn;
     @FXML private TableColumn<Vente, String> puVenteColumn;
@@ -44,7 +44,7 @@ public class CaisseController {
     public void initialize() throws SQLException {
         if(caisseTable != null){
 
-            idMedicamentColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+            numVenteColumn.setCellValueFactory(new PropertyValueFactory<>("numVente"));
             medicamentColumn.setCellValueFactory(new PropertyValueFactory<>("dci"));
             quantiteColumn.setCellValueFactory(new PropertyValueFactory<>("qteDemande"));
             puVenteColumn.setCellValueFactory(new PropertyValueFactory<>("puVente"));
@@ -52,7 +52,7 @@ public class CaisseController {
 
             caisseTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
-                    idMedicamentField.setText(String.valueOf(newSelection.getIdMedicament()));
+                    numVenteField.setText(String.valueOf(newSelection.getIdMedicament()));
                     totalLabel.setText(String.valueOf(newSelection.getMontant()));
                 }
             });
@@ -69,6 +69,7 @@ public class CaisseController {
     public boolean isRowSelected() {
         return caisseTable.getSelectionModel().getSelectedItem() != null;
     }
+    
     private ObservableList<Vente> nonVenduList = FXCollections.observableArrayList();
 
     private void loadCaisseTable() throws SQLException{
@@ -95,11 +96,11 @@ public class CaisseController {
             if(!isInvalid){
                 VenteDAO venteDAO = new VenteDAO();
 
-                int idMedicament = Integer.parseInt(idMedicamentField.getText());
+                String numVente = numVenteField.getText();
 
                 String facturePDF = "facture_pdf";
-                Facture ajouterFacture = new Facture(facturePDF);
-                if(venteDAO.validerVente(idMedicament) && venteDAO.addFacture(ajouterFacture)){
+                Facture ajouterFacture = new Facture(facturePDF, numVente);
+                if(venteDAO.validerVente(numVente) && venteDAO.addFacture(ajouterFacture)){
                     loadCaisseTable();
                     clearForm();
                 }

@@ -15,8 +15,9 @@ public class Facture {
         this.numVente = numVente;
     }
 
-    public Facture(String facturePDF) {
+    public Facture(String facturePDF, String numVente) {
         this.pdfFile = facturePDF;
+        this.numVente = numVente;
     }
 
     // Getters and Setters
