@@ -31,7 +31,7 @@
             <!-- Items Table -->
             <TableView fx:id="caisseTable" style="-fx-background-radius: 5;">
                 <columns>
-                    <TableColumn fx:id="numVenteColumn" visible="false" />
+                    <TableColumn fx:id="numVenteColumn" visible="true" />
                     <TableColumn fx:id="medicamentColumn" prefWidth="200" text="Médicament" />
                     <TableColumn fx:id="quantiteColumn" prefWidth="100" text="Quantité" />
                     <TableColumn fx:id="puVenteColumn" prefWidth="100" text="Prix Unitaire" />
@@ -70,7 +70,7 @@
             </GridPane>
 
             <!-- Validate Button -->
-            <TextField fx:id="numVenteField" visible="false" />
+            <TextField fx:id="numVenteField" visible="true" />
             <Button onAction="#validerButtonOnAction" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 4; -fx-pref-width: 150;" text="Valider Paiement" />
         </VBox>
     </center>

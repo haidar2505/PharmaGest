@@ -106,12 +106,12 @@ public class VenteDAO {
 
     public ObservableList<Vente> getAllNonVendu() throws SQLException{
         ObservableList<Vente> allNonVendu = FXCollections.observableArrayList();
-        String getNonVendu = "SELECT v.id_medicament, m.dci, m.pu_vente, v.qte_demande, v.montant FROM medicament m JOIN vente v ON m.id_medicament = v.id_medicament WHERE v.statut_panier = false AND statut_paiement = false";
+        String getNonVendu = "SELECT v.num_vente, m.dci, m.pu_vente, v.qte_demande, v.montant FROM medicament m JOIN vente v ON m.id_medicament = v.id_medicament WHERE v.statut_panier = false AND statut_paiement = false";
         try(PreparedStatement stmt = conn.prepareStatement(getNonVendu)) {
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
                 Vente vente = new Vente(
-                        rs.getInt("id_medicament"),
+                        rs.getString("num_vente"),
                         rs.getString("dci"),
                         rs.getDouble("pu_vente"),
                         rs.getInt("qte_demande"),

@@ -52,8 +52,8 @@ public class CaisseController {
 
             caisseTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
-                    numVenteField.setText(String.valueOf(newSelection.getIdMedicament()));
                     totalLabel.setText(String.valueOf(newSelection.getMontant()));
+                    numVenteField.setText(String.valueOf(newSelection.getNumVente()));
                 }
             });
 
@@ -103,6 +103,8 @@ public class CaisseController {
                 if(venteDAO.validerVente(numVente) && venteDAO.addFacture(ajouterFacture)){
                     loadCaisseTable();
                     clearForm();
+                }else{
+                    montantFieldError.setText("Failed");
                 }
             }
         }else{

@@ -108,7 +108,7 @@ public class VenteController {
 
             validationTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
-                    numVentePanierField.setText(String.valueOf(newSelection.getIdMedicament()));
+                    numVentePanierField.setText(String.valueOf(newSelection.getNumVente()));
                     totalLabel.setText(String.valueOf(newSelection.getMontant()));
                 }
             });
@@ -199,9 +199,7 @@ public class VenteController {
                     int stockMin = stockData.getStockMin();
                     int stockMax = stockData.getStockMax();
 
-                    int suffiecientStock = currentStock - qteStock;
-
-                    if (qteStock >= currentStock || stockMin >= suffiecientStock) {
+                    if (qteStock >= currentStock) {
                         quantiteError.setText("Stock insufficient");
                         isInvalid = true;
                     }

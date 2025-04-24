@@ -38,12 +38,12 @@ public class DashboardController {
 
     @FXML private Button commandeButton;
     public void commandeButtonOnAction(ActionEvent event) throws IOException {
-        sceneLoader.loadScene("commande.fxml", "Commande", commandeButton);
+        sceneLoader.loadScene("Commande.fxml", "Commande", commandeButton);
     }
 
     @FXML private Button receptionCmdButton;
     public void setReceptionCmdButtonOnAction(ActionEvent event) throws IOException {
-        sceneLoader.loadScene("receptionCommande.fxml", "Reception des commandes", receptionCmdButton);
+        sceneLoader.loadScene("RcpCommande.fxml", "Reception des commandes", receptionCmdButton);
     }
 
     @FXML private Button changeButton;
